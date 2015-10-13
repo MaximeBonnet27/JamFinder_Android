@@ -29,10 +29,10 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mNameEditText = (EditText) findViewById(R.id.sign_in_name_edit);
-        mPasswordEditText = (EditText) findViewById(R.id.sign_in_password_edit);
+        mNameEditText = (EditText) findViewById(R.id.login_name_edit);
+        mPasswordEditText = (EditText) findViewById(R.id.login_password_edit);
 
-        mSubmitButton = (Button) findViewById(R.id.sign_in_submit_button);
+        mSubmitButton = (Button) findViewById(R.id.login_submit_button);
         mSubmitButton.setOnClickListener(this);
 
 

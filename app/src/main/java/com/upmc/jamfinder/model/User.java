@@ -20,4 +20,16 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    //setName
+    //setPassword
+    //mail?
+    //num tel?
+    //activites preferées?
+    //mes amis?
+    //mes activiter crée?
+    //mes activiter participé
+
+
+
 }

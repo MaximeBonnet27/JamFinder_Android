@@ -3,6 +3,7 @@ package com.upmc.jamfinder.activities;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,8 @@ import com.upmc.jamfinder.R;
 import com.upmc.jamfinder.tools.UserTools;
 
 public class HomeActivity extends ActionBarActivity implements View.OnClickListener {
+
+    private String TAG = "HOME ACTIVITY";
 
     private boolean mIsLoggedIn;
 
@@ -24,7 +27,9 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
         mIsLoggedIn = checkUserLoggedIn();
 
+
         if(mIsLoggedIn){
+            Log.d(TAG, "OUAIS OUAIS");
             goToMainMenuActivity();
         }
 

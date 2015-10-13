@@ -19,4 +19,14 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="login_name_hint">Name</string>
     <string name="login_submit">Log In !</string>
+
+    <string-array name="main_drawer_menu_entries">
+        <item>Profile</item>
+        <item>Friends</item>
+        <item>My Jams</item>
+        <!--<item>My Activities</item> -->
+        <item>Past Jams</item>
+        <item>Logout</item>
+    </string-array>
+
 </resources>

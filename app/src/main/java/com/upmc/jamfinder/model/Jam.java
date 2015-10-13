@@ -10,7 +10,9 @@ import java.util.List;
  */
 public class Jam {
 
-    private User creator;
+    private String name;
+
+    private User host;
     private List<User> participants;
     private Location location;
     private Date start;

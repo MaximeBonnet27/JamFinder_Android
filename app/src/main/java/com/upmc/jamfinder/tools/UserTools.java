@@ -18,7 +18,7 @@ public class UserTools {
 
         String json = preferences.getString(context.getString(R.string.user_logged_in_preferences_key), "");
 
-        if(json == null) {
+        if(json == "") {
             return null;
         }
 
@@ -32,8 +32,10 @@ public class UserTools {
     public static void logUserIn(Context context, User newUser) {
         SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.shared_preferences_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+
         Gson jsonParser = new Gson();
         String json = jsonParser.toJson(newUser);
+
         editor.putString(context.getString(R.string.user_logged_in_preferences_key), json);
         editor.commit();
     }
