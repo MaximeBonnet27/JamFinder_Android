@@ -14,40 +14,34 @@ import com.upmc.jamfinder.enums.CheckFormResult;
 import com.upmc.jamfinder.model.User;
 import com.upmc.jamfinder.tools.UserTools;
 
-public class SignInActivity extends ActionBarActivity implements View.OnClickListener {
-
+public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
 
     private EditText mNameEditText;
     private EditText mPasswordEditText;
-    private EditText mConfirmPasswordEditText;
 
-    private Button mSubmitbutton;
-
-    // Widgets' values
+    private Button mSubmitButton;
 
     private String mName;
     private String mPassword;
-    private String mConfirmation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_login);
 
-        // Get Widgets from id's
         mNameEditText = (EditText) findViewById(R.id.sign_in_name_edit);
         mPasswordEditText = (EditText) findViewById(R.id.sign_in_password_edit);
-        mConfirmPasswordEditText = (EditText) findViewById(R.id.sign_in_confirm_password_edit);
 
-        mSubmitbutton = (Button) findViewById(R.id.sign_in_submit_button);
-        mSubmitbutton.setOnClickListener(this);
+        mSubmitButton = (Button) findViewById(R.id.sign_in_submit_button);
+        mSubmitButton.setOnClickListener(this);
+
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_sign_in, menu);
+        getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
 
@@ -77,23 +71,15 @@ public class SignInActivity extends ActionBarActivity implements View.OnClickLis
         if (mPassword.isEmpty()) {
             return CheckFormResult.EMPTY_PASSWORD;
         }
-        mConfirmation = mConfirmPasswordEditText.getText().toString();
-        if (mConfirmation.isEmpty()) {
-            return CheckFormResult.EMPTY_CONFIRMATION;
-        }
-        if (!mPassword.equals(mConfirmation)) {
-            return CheckFormResult.INCORRECT_CONFIRMATION;
-        }
         return CheckFormResult.VALID;
     }
 
-
     @Override
     public void onClick(View view) {
-        if(view.getId() == mSubmitbutton.getId()){
+        if(view.getId() == mSubmitButton.getId()){
             if(checkForm() == CheckFormResult.VALID){
-                User newUser = new User(mName, mPassword);
-                UserTools.logUserIn(this, newUser);
+                User loggingIn = new User(mName, mPassword);
+                UserTools.logUserIn(this, loggingIn);
                 goToMainActivity();
             }
         }

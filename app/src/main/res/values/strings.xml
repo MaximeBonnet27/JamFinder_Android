@@ -9,4 +9,14 @@
     <string name="sign_in_password_hint">Password</string>
     <string name="sign_in_confirm_password_hint">Confirm Password</string>
     <string name="sign_in_submit">Create Account</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="home_login_button">Log in !</string>
+    <string name="home_sign_in_button">Get a free account !</string>
+    <string name="home_message">You\'re not logged in, what do you want to do ?</string>
+    <string name="shared_preferences_key">jamFinderSharedPreferences</string>
+    <string name="user_logged_in_preferences_key">loggedInUser</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="login_name_hint">Name</string>
+    <string name="login_submit">Log In !</string>
 </resources>

@@ -55,7 +55,6 @@
         android:layout_below="@id/sign_in_confirm_password_edit"
         android:layout_centerHorizontal="true"
         android:text="@string/sign_in_submit"
-        android:onClick="onSubmitForm"
         />
 
 </RelativeLayout>
