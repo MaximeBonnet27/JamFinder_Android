@@ -24,12 +24,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.upmc.jamfinder.R;
 import com.upmc.jamfinder.customLayouts.DrawerPanelListAdapter;
 
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,LocationListener {
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener {
 
     private String TAG = "MAIN_ACTIVITY";
 
@@ -38,7 +39,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Button mMenuButton;
 
     private GoogleMap mMap;
-
+    private Marker mMarker;
     private ListView mDrawerContent;
 
     private String[] mDrawerMenuEntries;
@@ -67,34 +68,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mLastLocation = null;
         mMap = mMapFragment.getMap();
 
-        //TODO: NE MARCHE PAS !
-
         mMap.setMyLocationEnabled(true);
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, true);
+        mMap.setOnMyLocationChangeListener(myLocationChangeListener);
 
-        try {
-            locationManager.getLastKnownLocation(provider);
-            Location location = locationManager.getLastKnownLocation(provider);
-
-            if (location != null) {
-                onLocationChanged(location);
-            }
-            locationManager.requestLocationUpdates(provider, 20000, 0, this);
-        }
-        catch(SecurityException e){
-            return;
-        }
-
-    }
-
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
     }
 
     @Override
@@ -121,10 +97,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        googleMap.addMarker(new MarkerOptions()
+        mMap = googleMap;
+        /*googleMap.addMarker(new MarkerOptions()
                 .position(mLastLocation == null ? new LatLng(0, 0) : new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
                 .title("Ouais ouais"));
+                */
     }
 
     @Override
@@ -134,55 +111,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        Log.d(TAG, mLastLocation.toString());
-    }
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+        @Override
+        public void onMyLocationChange(Location location) {
+            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+            Log.d(TAG,"Lat = " + location.getLatitude() + ", Long = " + location.getLongitude());
+            mMarker = mMap.addMarker(new MarkerOptions().position(loc));
+            if(mMap != null){
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+            }
+        }
+    };
 
-    @Override
-    public void onConnectionSuspended(int i) {
 
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        // Getting latitude of the current location
-        double latitude = location.getLatitude();
-
-        // Getting longitude of the current location
-        double longitude = location.getLongitude();
-
-        // Creating a LatLng object for the current location
-        LatLng latLng = new LatLng(latitude, longitude);
-
-        // Showing the current location in Google Map
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        // Zoom in the Google Map
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 }
