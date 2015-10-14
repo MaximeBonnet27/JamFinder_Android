@@ -29,7 +29,6 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
 
         if(mIsLoggedIn){
-            Log.d(TAG, "OUAIS OUAIS");
             goToMainMenuActivity();
         }
 

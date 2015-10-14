@@ -14,15 +14,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -30,7 +33,8 @@ import com.upmc.jamfinder.R;
 import com.upmc.jamfinder.customLayouts.DrawerPanelListAdapter;
 
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener {
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private String TAG = "MAIN_ACTIVITY";
 
@@ -40,7 +44,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Marker mMarker;
-    private ListView mDrawerContent;
+    private LinearLayout mDrawerContent;
+
+    private ListView mDrawerList;
 
     private String[] mDrawerMenuEntries;
 
@@ -52,25 +58,33 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        buildGoogleApiClient();
+        mGoogleApiClient.connect();
+
+
         mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.main_map);
         mMapFragment.getMapAsync(this);
+        mMap = mMapFragment.getMap();
 
         mDrawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
-        mDrawerContent = (ListView) findViewById(R.id.main_left_drawer);
+        mDrawerContent = (LinearLayout) findViewById(R.id.main_left_drawer);
 
         mMenuButton = (Button) findViewById(R.id.main_menu_button);
         mMenuButton.setOnClickListener(this);
 
         mDrawerMenuEntries = getResources().getStringArray(R.array.main_drawer_menu_entries);
 
-        mDrawerContent.setAdapter(new DrawerPanelListAdapter(this, mDrawerMenuEntries));
+        mDrawerList = (ListView) findViewById(R.id.main_drawer_list);
+        mDrawerList.setAdapter(new DrawerPanelListAdapter(this, mDrawerMenuEntries));
 
-        mLastLocation = null;
-        mMap = mMapFragment.getMap();
+    }
 
-        mMap.setMyLocationEnabled(true);
-        mMap.setOnMyLocationChangeListener(myLocationChangeListener);
-
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
     @Override
@@ -97,34 +111,48 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMyLocationEnabled(true);
-        mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+        setUpMap();
+    }
 
-        /*googleMap.addMarker(new MarkerOptions()
-                .position(mLastLocation == null ? new LatLng(0, 0) : new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
-                .title("Ouais ouais"));
-                */
+    private void setUpMap() {
+        if (mMap == null) {
+            Log.d(TAG, "Map NULL");
+            return;
+        }
+
+        mMap.setMyLocationEnabled(true);
+
+        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                Log.d(TAG, "Postion changee");
+                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == mMenuButton.getId()){
+        if (view.getId() == mMenuButton.getId()) {
             mDrawer.openDrawer(mDrawerContent);
         }
     }
 
-    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
-        @Override
-        public void onMyLocationChange(Location location) {
-            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-            Log.d(TAG,"Lat = " + location.getLatitude() + ", Long = " + location.getLongitude());
-            mMarker = mMap.addMarker(new MarkerOptions().position(loc));
-            if(mMap != null){
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-            }
-        }
-    };
 
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(TAG, "CONNECTION FAILED");
+        Log.e(TAG, connectionResult.toString());
+    }
 
 }
