@@ -98,6 +98,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
+        mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+
         /*googleMap.addMarker(new MarkerOptions()
                 .position(mLastLocation == null ? new LatLng(0, 0) : new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
                 .title("Ouais ouais"));
