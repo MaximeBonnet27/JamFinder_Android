@@ -116,6 +116,7 @@ public class MainActivity
 
     private void placeMarkers(){
         ArrayList<Jam> jams = JamTools.getJamsList(this);
+        if(jams.isEmpty()) return;
         for(Jam jam : jams){
             mMap.addMarker(new MarkerOptions()
                     .position(jam.getLocation())

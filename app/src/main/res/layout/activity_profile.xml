@@ -17,7 +17,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@drawable/ic_person_black_48dp"/>
         <EditText
 
             android:id="@+id/profile_name_edit"
@@ -34,7 +34,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@drawable/ic_lock_outline_black_48dp"/>
         <EditText
 
             android:id="@+id/profile_password_edit"

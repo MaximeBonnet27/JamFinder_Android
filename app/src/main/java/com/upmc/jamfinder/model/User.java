@@ -18,10 +18,14 @@ public class User {
 
     private ArrayList<User> friends;
 
+    private ArrayList<Jam> createdJams;
+
     public User(String name, String password) {
         this.name = name;
         this.password = password;
         id = cpt++;
+        createdJams = new ArrayList<>();
+        friends = new ArrayList<>();
     }
 
     public String getName() {
@@ -62,16 +66,7 @@ public class User {
     }
 
     public ArrayList<Jam> getCreatedJams(){
-        Jam jam1 = new Jam("Jam1", this, null, new Date(), new Date());
-        Jam jam2 = new Jam("Jam2", this, null, new Date(), new Date());
-        Jam jam3 = new Jam("Jam3", this, null, new Date(), new Date());
-        Jam jam4 = new Jam("Jam4", this, null, new Date(), new Date());
-        ArrayList<Jam> jams = new ArrayList<>();
-        jams.add(jam1);
-        jams.add(jam2);
-        jams.add(jam3);
-        jams.add(jam4);
-        return jams;
+        return createdJams;
     }
 
     //setName

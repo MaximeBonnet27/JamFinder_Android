@@ -29,10 +29,15 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+
+
         mNameEditText = (EditText) findViewById(R.id.profile_name_edit);
         mPasswordEditText = (EditText) findViewById(R.id.profile_password_edit);
 
         mUser = UserTools.getLoggedInUser(this);
+
+        mNameEditText.setText(mUser.getName());
+        mPasswordEditText.setText(mUser.getPassword());
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

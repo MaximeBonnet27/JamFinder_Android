@@ -3,6 +3,7 @@ package com.upmc.jamfinder.activities;
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -23,11 +24,13 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.upmc.jamfinder.R;
 import com.upmc.jamfinder.customLayouts.PlaceAutocompleteAdapter;
 import com.upmc.jamfinder.model.Jam;
+import com.upmc.jamfinder.model.User;
 import com.upmc.jamfinder.tools.JamTools;
 import com.upmc.jamfinder.tools.UserTools;
 
 public class CreateJamActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String TAG = "CJACTIVITY";
     private GoogleApiClient mGoogleApiClient;
 
     private AutoCompleteTextView mAutoCompleteTextView;
@@ -126,6 +129,9 @@ public class CreateJamActivity extends AppCompatActivity implements GoogleApiCli
                             UserTools.getLoggedInUser(CreateJamActivity.this),
                             mLocation, null, null);
                     JamTools.saveJam(CreateJamActivity.this, newJam);
+                    User user =  UserTools.getLoggedInUser(CreateJamActivity.this);
+                    user.getCreatedJams().add(newJam);
+                    UserTools.logUserIn(CreateJamActivity.this, user);
                     Toast.makeText(CreateJamActivity.this, "Jam sauvée", Toast.LENGTH_SHORT).show();
 
                 }

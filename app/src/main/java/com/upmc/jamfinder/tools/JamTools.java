@@ -43,7 +43,12 @@ public class JamTools {
         SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.shared_preferences_key), Context.MODE_PRIVATE);
         String formerList = preferences.getString(context.getString(R.string.jam_list_preferences_key), "");
         Gson jsonParser = new Gson();
-        return jsonParser.fromJson(formerList, new TypeToken<List<Jam>>(){}.getType());
+        ArrayList<Jam> list = jsonParser.fromJson(formerList, new TypeToken<List<Jam>>(){}.getType());
+        if(list == null){
+            return new ArrayList<Jam>();
+        }else{
+            return list;
+        }
 
     }
 
