@@ -1,13 +1,16 @@
 package com.upmc.jamfinder.activities;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,7 +33,9 @@ import com.upmc.jamfinder.customLayouts.DrawerPanelListAdapter;
 
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, AdapterView.OnItemClickListener {
+
+    //TODO : Changer le drawer en Navigation view !
 
     private String TAG = "MAIN_ACTIVITY";
 
@@ -49,6 +54,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient mGoogleApiClient;
     private Location mCurrentLocation;
     private LocationRequest mLocationRequest;
+
+    private FloatingActionButton mFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mDrawerList = (ListView) findViewById(R.id.main_drawer_list);
         mDrawerList.setAdapter(new DrawerPanelListAdapter(this, mDrawerMenuEntries));
 
+        mDrawerList.setOnItemClickListener(this);
+
+        mFAB = (FloatingActionButton) findViewById(R.id.main_fab);
+        mFAB.setOnClickListener(this);
+        
+        
         buildGoogleApiClient();
 
     }
@@ -171,6 +184,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         if (view.getId() == mMenuButton.getId()) {
             mDrawer.openDrawer(mDrawerContent);
         }
+        else if(view.getId() == mFAB.getId()){
+            Toast.makeText(MainActivity.this, "Appuyé sur FAB", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -199,8 +215,22 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
-        Toast.makeText(this, "Location changée",
-                Toast.LENGTH_SHORT).show();
         updateUI();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = null;
+        String menuChoisi = (String) mDrawerList.getAdapter().getItem(position);
+        if(menuChoisi.equals(mDrawerMenuEntries[0])){
+            intent = new Intent(this, ProfileActivity.class);
+        }
+        else if(menuChoisi.equals(mDrawerMenuEntries[1])){
+            intent = new Intent(this, FriendsActivity.class);
+        }
+        else if(menuChoisi.equals(mDrawerMenuEntries[2])){
+            intent = new Intent(this, JamListActivity.class);
+        }
+        startActivity(intent);
     }
 }

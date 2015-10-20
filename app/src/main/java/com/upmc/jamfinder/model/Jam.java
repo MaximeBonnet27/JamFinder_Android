@@ -10,6 +10,9 @@ import java.util.List;
  */
 public class Jam {
 
+    private static int cpt = 0;
+
+    private int id;
     private String name;
 
     private User host;
@@ -18,6 +21,40 @@ public class Jam {
     private Date start;
     private Date end;
 
+    public Jam(String name, User host, Location location, Date start, Date end) {
+        this.name = name;
+        this.host = host;
+        this.location = location;
+        this.start = start;
+        this.end = end;
+        this.id = cpt++;
+    }
 
+    public int getId() {
+        return id;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public User getHost() {
+        return host;
+    }
+
+    public List<User> getParticipants() {
+        return participants;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
 }

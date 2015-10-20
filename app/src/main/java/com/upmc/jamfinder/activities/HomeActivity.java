@@ -3,6 +3,7 @@ package com.upmc.jamfinder.activities;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +13,7 @@ import android.widget.Button;
 import com.upmc.jamfinder.R;
 import com.upmc.jamfinder.tools.UserTools;
 
-public class HomeActivity extends ActionBarActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String TAG = "HOME ACTIVITY";
 

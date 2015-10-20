@@ -18,15 +18,14 @@ public class UserTools {
 
         String json = preferences.getString(context.getString(R.string.user_logged_in_preferences_key), "");
 
-        if(json == "") {
+        if(json.isEmpty()) {
             return null;
         }
 
         Gson jsonParser = new Gson();
 
-        User user = jsonParser.fromJson(json, User.class);
+        return jsonParser.fromJson(json, User.class);
 
-        return user;
     }
 
     public static void logUserIn(Context context, User newUser) {
@@ -39,4 +38,5 @@ public class UserTools {
         editor.putString(context.getString(R.string.user_logged_in_preferences_key), json);
         editor.commit();
     }
+
 }

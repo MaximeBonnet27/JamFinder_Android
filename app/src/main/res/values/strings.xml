@@ -19,6 +19,8 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="login_name_hint">Name</string>
     <string name="login_submit">Log In !</string>
+    <string name="recycler_card_jam_edit">Edit Jam</string>
+    <string name="recycler_card_jam_delete">Delete Jam</string>
 
     <string-array name="main_drawer_menu_entries">
         <item>Profile</item>
