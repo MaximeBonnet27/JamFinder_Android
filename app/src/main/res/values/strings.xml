@@ -21,6 +21,16 @@
     <string name="login_submit">Log In !</string>
     <string name="recycler_card_jam_edit">Edit Jam</string>
     <string name="recycler_card_jam_delete">Delete Jam</string>
+    <string name="main_drawer_profile">Profile</string>
+    <string name="main_drawer_friends">Friends</string>
+    <string name="main_drawer_jams">My Jams</string>
+    <string name="main_drawer_history">Past Jams</string>
+    <string name="main_drawer_logout">Logout</string>
+    <string name="create_jam_address_hint">Address</string>
+    <string name="create_jam_name_hint">Jam\'s name</string>
+    <string name="create_jam_details_hint">Details</string>
+    <string name="create_jam_button">Create Jam !</string>
+    <string name="jam_list_preferences_key">ListeJam</string>
 
     <string-array name="main_drawer_menu_entries">
         <item>Profile</item>

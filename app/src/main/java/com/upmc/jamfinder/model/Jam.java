@@ -2,6 +2,8 @@ package com.upmc.jamfinder.model;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Date;
 import java.util.List;
 
@@ -17,11 +19,11 @@ public class Jam {
 
     private User host;
     private List<User> participants;
-    private Location location;
+    private LatLng location;
     private Date start;
     private Date end;
 
-    public Jam(String name, User host, Location location, Date start, Date end) {
+    public Jam(String name, User host, LatLng location, Date start, Date end) {
         this.name = name;
         this.host = host;
         this.location = location;
@@ -46,7 +48,7 @@ public class Jam {
         return participants;
     }
 
-    public Location getLocation() {
+    public LatLng getLocation() {
         return location;
     }
 

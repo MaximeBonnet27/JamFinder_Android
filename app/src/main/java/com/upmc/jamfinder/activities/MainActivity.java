@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -30,12 +31,18 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.upmc.jamfinder.R;
 import com.upmc.jamfinder.customLayouts.DrawerPanelListAdapter;
+import com.upmc.jamfinder.model.Jam;
+import com.upmc.jamfinder.tools.JamTools;
+
+import java.util.ArrayList;
 
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, AdapterView.OnItemClickListener {
+public class MainActivity
+        extends FragmentActivity
+        implements OnMapReadyCallback, View.OnClickListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, NavigationView.OnNavigationItemSelectedListener {
 
-    //TODO : Changer le drawer en Navigation view !
+    //TODO : Changer tous les listeners en attributs private (plus propre)
 
     private String TAG = "MAIN_ACTIVITY";
 
@@ -44,12 +51,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Button mMenuButton;
 
     private GoogleMap mMap;
-    private Marker mMarker;
-    private LinearLayout mDrawerContent;
 
-    private ListView mDrawerList;
-
-    private String[] mDrawerMenuEntries;
+    private NavigationView mNavigationView;
 
     private GoogleApiClient mGoogleApiClient;
     private Location mCurrentLocation;
@@ -67,41 +70,38 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = mMapFragment.getMap();
 
         mDrawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
-        mDrawerContent = (LinearLayout) findViewById(R.id.main_left_drawer);
 
         mMenuButton = (Button) findViewById(R.id.main_menu_button);
         mMenuButton.setOnClickListener(this);
 
-        mDrawerMenuEntries = getResources().getStringArray(R.array.main_drawer_menu_entries);
-
-        mDrawerList = (ListView) findViewById(R.id.main_drawer_list);
-        mDrawerList.setAdapter(new DrawerPanelListAdapter(this, mDrawerMenuEntries));
-
-        mDrawerList.setOnItemClickListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.main_navigation_drawer);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         mFAB = (FloatingActionButton) findViewById(R.id.main_fab);
         mFAB.setOnClickListener(this);
-        
-        
+
         buildGoogleApiClient();
 
     }
+
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
     }
+
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
-        if(mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient.isConnected()) {
             startLocationUpdates();
         }
+        placeMarkers();
 
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         if (mGoogleApiClient.isConnected()) {
             stopLocationUpdates();
@@ -109,16 +109,27 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
         mGoogleApiClient.disconnect();
     }
 
-    private void updateUI(){
+    private void placeMarkers(){
+        ArrayList<Jam> jams = JamTools.getJamsList(this);
+        for(Jam jam : jams){
+            mMap.addMarker(new MarkerOptions()
+                    .position(jam.getLocation())
+                    .title(jam.getName()));
+        }
+    }
+
+    private void updateUI() {
         LatLng loc = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
         //mMarker = mMap.addMarker(new MarkerOptions().position(loc));
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 14.0f));
+
+
 
     }
 
@@ -132,7 +143,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void createLocationRequest(){
+    private void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10 * 1000);
         mLocationRequest.setFastestInterval(5 * 1000);
@@ -143,7 +154,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
-    private void stopLocationUpdates(){
+    private void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
@@ -182,19 +193,19 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onClick(View view) {
         if (view.getId() == mMenuButton.getId()) {
-            mDrawer.openDrawer(mDrawerContent);
-        }
-        else if(view.getId() == mFAB.getId()){
-            Toast.makeText(MainActivity.this, "Appuyé sur FAB", Toast.LENGTH_SHORT).show();
+            mDrawer.openDrawer(mNavigationView);
+        } else if (view.getId() == mFAB.getId()) {
+            Intent intent = new Intent(this, CreateJamActivity.class);
+            startActivity(intent);
         }
     }
 
 
     @Override
     public void onConnected(Bundle bundle) {
-        if(mCurrentLocation == null){
+        if (mCurrentLocation == null) {
             mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if(mCurrentLocation != null) {
+            if (mCurrentLocation != null) {
                 updateUI();
             }
         }
@@ -218,19 +229,34 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         updateUI();
     }
 
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public boolean onNavigationItemSelected(MenuItem item) {
+        mDrawer.closeDrawers();
+
+       item.setChecked(false);
+
         Intent intent = null;
-        String menuChoisi = (String) mDrawerList.getAdapter().getItem(position);
-        if(menuChoisi.equals(mDrawerMenuEntries[0])){
-            intent = new Intent(this, ProfileActivity.class);
-        }
-        else if(menuChoisi.equals(mDrawerMenuEntries[1])){
-            intent = new Intent(this, FriendsActivity.class);
-        }
-        else if(menuChoisi.equals(mDrawerMenuEntries[2])){
-            intent = new Intent(this, JamListActivity.class);
+        switch (item.getItemId()) {
+            case R.id.main_drawer_profile:
+                intent = new Intent(this, ProfileActivity.class);
+                break;
+            case R.id.main_drawer_friends:
+                intent = new Intent(this, FriendsActivity.class);
+                break;
+            case R.id.main_drawer_jams:
+                intent = new Intent(this, JamListActivity.class);
+                break;
+            case R.id.main_drawer_history:
+                // TODO HISTORY
+                return false;
+
+            case R.id.main_drawer_logout:
+                //TODO Logout
+                return false;
+
         }
         startActivity(intent);
+        return true;
     }
 }

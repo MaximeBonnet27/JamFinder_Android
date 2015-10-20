@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/main_drawer_profile"
+            android:checked="false"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/main_drawer_profile" />
+
+        <item
+            android:id="@+id/main_drawer_friends"
+            android:checked="false"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/main_drawer_friends" />
+
+        <item
+            android:id="@+id/main_drawer_jams"
+            android:checked="false"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/main_drawer_jams" />
+
+        <item
+            android:id="@+id/main_drawer_history"
+            android:checked="false"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/main_drawer_history" />
+
+
+        <item
+            android:id="@+id/main_drawer_logout"
+            android:checked="false"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/main_drawer_logout" />
+
+
+    </group>
+</menu>
