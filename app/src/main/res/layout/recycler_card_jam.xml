@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:id="@+id/recycler_card_jam_cardview"
 
     android:layout_width="match_parent"
@@ -9,11 +10,9 @@
     android:paddingBottom="4dp"
     android:paddingTop="4dp"
 
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-
+    android:layout_margin="8dp"
     android:layout_gravity="center"
-    card_view:cardCornerRadius="4dp">
+    app:cardCornerRadius="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,12 +20,29 @@
         android:orientation="vertical"
         android:gravity="center"
         >
-        <TextView
-            android:id="@+id/recycler_card_jam_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PLACEHOLDER" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/recycler_card_jam_map_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:cameraZoom="13"
+                app:liteMode="true"
+                app:mapType="normal" />
+            <TextView
+                android:id="@+id/recycler_card_jam_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#AA000000"
 
+                android:text="QSDQSD"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_gravity="bottom"
+                android:gravity="center"
+                />
+        </FrameLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
