@@ -117,24 +117,17 @@ public class CreateJamActivity extends AppCompatActivity implements GoogleApiCli
         }
     };
 
-
-
+    @Override
+    public void onBackPressed() {
+        saveJam();
+        super.onBackPressed();
+    }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if(v.getId() == mButton.getId()){
-                if(mLocation != null && !mNameEditText.getText().toString().isEmpty()){
-                    Jam newJam = new Jam(mNameEditText.getText().toString(),
-                            UserTools.getLoggedInUser(CreateJamActivity.this),
-                            mLocation.latitude, mLocation.longitude, null, null);
-                    JamTools.saveJam(CreateJamActivity.this, newJam);
-                    User user =  UserTools.getLoggedInUser(CreateJamActivity.this);
-                    user.getCreatedJams().add(newJam);
-                    UserTools.logUserIn(CreateJamActivity.this, user);
-                    Toast.makeText(CreateJamActivity.this, "Jam sauvée", Toast.LENGTH_SHORT).show();
-
-                }
+                saveJam();
             }
         }
     };
@@ -149,5 +142,19 @@ public class CreateJamActivity extends AppCompatActivity implements GoogleApiCli
         }
     };
 
+
+    private void saveJam(){
+        if(mLocation != null && !mNameEditText.getText().toString().isEmpty()){
+            Jam newJam = new Jam(mNameEditText.getText().toString(),
+                    UserTools.getLoggedInUser(CreateJamActivity.this),
+                    mLocation.latitude, mLocation.longitude, null, null);
+            JamTools.saveJam(CreateJamActivity.this, newJam);
+            User user =  UserTools.getLoggedInUser(CreateJamActivity.this);
+            user.getCreatedJams().add(newJam);
+            UserTools.logUserIn(CreateJamActivity.this, user);
+            Toast.makeText(CreateJamActivity.this, "Jam sauvée", Toast.LENGTH_SHORT).show();
+
+        }
+    }
 
 }
