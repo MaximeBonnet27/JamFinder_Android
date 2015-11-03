@@ -127,7 +127,7 @@ public class CreateJamActivity extends AppCompatActivity implements GoogleApiCli
                 if(mLocation != null && !mNameEditText.getText().toString().isEmpty()){
                     Jam newJam = new Jam(mNameEditText.getText().toString(),
                             UserTools.getLoggedInUser(CreateJamActivity.this),
-                            mLocation, null, null);
+                            mLocation.latitude, mLocation.longitude, null, null);
                     JamTools.saveJam(CreateJamActivity.this, newJam);
                     User user =  UserTools.getLoggedInUser(CreateJamActivity.this);
                     user.getCreatedJams().add(newJam);

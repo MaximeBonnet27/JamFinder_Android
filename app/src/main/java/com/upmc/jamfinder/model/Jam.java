@@ -4,13 +4,15 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by maxime on 13/10/15.
  */
-public class Jam {
+public class Jam implements Serializable{
 
     private static int cpt = 0;
 
@@ -19,17 +21,21 @@ public class Jam {
 
     private User host;
     private List<User> participants;
-    private LatLng location;
     private Date start;
     private Date end;
+    private double latitute, longitude;
 
-    public Jam(String name, User host, LatLng location, Date start, Date end) {
+    private String details;
+
+    public Jam(String name, User host, double latitute, double longitude, Date start, Date end) {
         this.name = name;
         this.host = host;
-        this.location = location;
+        this.latitute = latitute;
+        this.longitude = longitude;
         this.start = start;
         this.end = end;
         this.id = cpt++;
+        this.participants = new ArrayList<>();
     }
 
     public int getId() {
@@ -49,7 +55,7 @@ public class Jam {
     }
 
     public LatLng getLocation() {
-        return location;
+        return new LatLng(latitute, longitude);
     }
 
     public Date getStart() {
@@ -58,5 +64,9 @@ public class Jam {
 
     public Date getEnd() {
         return end;
+    }
+
+    public String getDetails() {
+        return details;
     }
 }

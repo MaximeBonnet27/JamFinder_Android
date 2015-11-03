@@ -2,13 +2,14 @@ package com.upmc.jamfinder.model;
 
 import android.location.Location;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by maxime on 13/10/15.
  */
-public class User {
+public class User implements Serializable{
 
     private static int cpt = 0;
     private int id;
@@ -19,6 +20,7 @@ public class User {
     private ArrayList<User> friends;
 
     private ArrayList<Jam> createdJams;
+    private ArrayList<Jam> goingToJams;
 
     public User(String name, String password) {
         this.name = name;
@@ -26,6 +28,7 @@ public class User {
         id = cpt++;
         createdJams = new ArrayList<>();
         friends = new ArrayList<>();
+        goingToJams = new ArrayList<>();
     }
 
     public String getName() {
@@ -69,15 +72,7 @@ public class User {
         return createdJams;
     }
 
-    //setName
-    //setPassword
-    //mail?
-    //num tel?
-    //activites preferées?
-    //mes amis?
-    //mes activiter crée?
-    //mes activiter participé
-
-
-
+    public ArrayList<Jam> getGoingToJams() {
+        return goingToJams;
+    }
 }

@@ -31,6 +31,11 @@
     <string name="create_jam_details_hint">Details</string>
     <string name="create_jam_button">Create Jam !</string>
     <string name="jam_list_preferences_key">ListeJam</string>
+    <string name="jam_details_jam_intent_key">jamcliquee</string>
+    <string name="jam_details_details">Details</string>
+    <string name="jam_details_edit">Edit</string>
+    <string name="jam_details_not_going">Not going</string>
+    <string name="jam_details_going">Join in !</string>
 
     <string-array name="main_drawer_menu_entries">
         <item>Profile</item>

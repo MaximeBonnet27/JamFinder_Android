@@ -82,6 +82,8 @@ public class MainActivity
 
         buildGoogleApiClient();
 
+        mMap.setOnMarkerClickListener(mMarkerListener);
+
     }
 
     @Override
@@ -114,13 +116,15 @@ public class MainActivity
         mGoogleApiClient.disconnect();
     }
 
-    private void placeMarkers(){
+    private void placeMarkers() {
         ArrayList<Jam> jams = JamTools.getJamsList(this);
-        if(jams.isEmpty()) return;
-        for(Jam jam : jams){
+        if (jams.isEmpty()) return;
+        for (Jam jam : jams) {
             mMap.addMarker(new MarkerOptions()
                     .position(jam.getLocation())
-                    .title(jam.getName()));
+                    .title(jam.getName()))
+            ;
+
         }
     }
 
@@ -129,7 +133,6 @@ public class MainActivity
         //mMarker = mMap.addMarker(new MarkerOptions().position(loc));
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 14.0f));
-
 
 
     }
@@ -235,7 +238,7 @@ public class MainActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         mDrawer.closeDrawers();
 
-       item.setChecked(false);
+        item.setChecked(false);
 
         Intent intent = null;
         switch (item.getItemId()) {
@@ -260,4 +263,24 @@ public class MainActivity
         startActivity(intent);
         return true;
     }
+
+    private GoogleMap.OnMarkerClickListener mMarkerListener = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            ArrayList<Jam> jams = JamTools.getJamsList(MainActivity.this);
+            for (Jam jam : jams) {
+                if (jam.getName().equals(marker.getTitle())) {
+                    Intent intent = new Intent(MainActivity.this, JamDetailsActivity.class);
+                    intent.putExtra(getString(R.string.jam_details_jam_intent_key), jam);
+                    MainActivity.this.startActivity(intent);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+    };
+
+
 }
