@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -48,7 +49,7 @@ public class MainActivity
 
     private MapFragment mMapFragment;
     private DrawerLayout mDrawer;
-    private Button mMenuButton;
+    private ImageView mMenuButton;
 
     private GoogleMap mMap;
 
@@ -71,7 +72,7 @@ public class MainActivity
 
         mDrawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
 
-        mMenuButton = (Button) findViewById(R.id.main_menu_button);
+        mMenuButton = (ImageView) findViewById(R.id.main_menu_button);
         mMenuButton.setOnClickListener(this);
 
         mNavigationView = (NavigationView) findViewById(R.id.main_navigation_drawer);

@@ -1,26 +1,30 @@
 package com.upmc.jamfinder.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.TextView;
 import com.upmc.jamfinder.R;
 import com.upmc.jamfinder.enums.CheckFormResult;
 import com.upmc.jamfinder.model.User;
 import com.upmc.jamfinder.tools.UserTools;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
-    private EditText mNameEditText;
-    private EditText mPasswordEditText;
 
-    private Button mSubmitButton;
+public class LoginActivity extends AppCompatActivity{
+
+    @Bind(R.id.login_name_edit)  EditText mNameEditText;
+    @Bind(R.id.login_password_edit)  EditText mPasswordEditText;
+    @Bind(R.id.login_submit_button)  AppCompatButton mSubmitButton;
+    @Bind(R.id.login_signin)  TextView mLinkSigin;
 
     private String mName;
     private String mPassword;
@@ -29,12 +33,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
-        mNameEditText = (EditText) findViewById(R.id.login_name_edit);
-        mPasswordEditText = (EditText) findViewById(R.id.login_password_edit);
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login();
+            }
+        });
 
-        mSubmitButton = (Button) findViewById(R.id.login_submit_button);
-        mSubmitButton.setOnClickListener(this);
+        mLinkSigin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSignInActivity();
+            }
+        });
 
 
     }
@@ -75,19 +88,55 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return CheckFormResult.VALID;
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == mSubmitButton.getId()){
-            if(checkForm() == CheckFormResult.VALID){
-                User loggingIn = new User(mName, mPassword);
-                UserTools.logUserIn(this, loggingIn);
-                goToMainActivity();
+    private void login(){
+        if(checkForm() == CheckFormResult.VALID){
+            mSubmitButton.setEnabled(false);
+
+            final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage(getString(R.string.login_authenticating));
+            progressDialog.show();
+
+            authenticating();
+
+            Thread runnable=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                }
+            });
+
+            /*android.os.Handler handler=new android.os.Handler();
+            handler.postDelayed(
+                    runnable, 3000
+            );*/
+
+            try {
+                runnable.join();
+                mSubmitButton.setEnabled(true);
+                goToMainMenuActivity();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+
         }
     }
 
-    private void goToMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
+    private boolean authenticating(){
+        User loggingIn = new User(mName, mPassword);
+        UserTools.logUserIn(this, loggingIn);
+        return true;
+    }
+
+    private void goToMainMenuActivity(){
+        goToActivity(MainActivity.class);
+    }
+    private void goToSignInActivity(){
+        goToActivity(SignInActivity.class);
+    }
+
+    private void goToActivity(Class target){
+        Intent intent = new Intent(this, target);
 
         startActivity(intent);
     }
