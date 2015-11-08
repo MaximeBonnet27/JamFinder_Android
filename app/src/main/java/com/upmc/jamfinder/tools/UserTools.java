@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.upmc.jamfinder.R;
-import com.upmc.jamfinder.activities.SignInActivity;
 import com.upmc.jamfinder.model.User;
 
 /**
@@ -37,6 +36,14 @@ public class UserTools {
 
         editor.putString(context.getString(R.string.user_logged_in_preferences_key), json);
         editor.commit();
+    }
+
+    private static User mainUser=new User("admin","admin","JamFinder@gmail.com");
+
+    public static User authenticating(String pseudo, String password){
+        if(mainUser.getName().equals(pseudo) && mainUser.getPassword().equals(password))
+            return mainUser;
+        return null;
     }
 
 }

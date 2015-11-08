@@ -19,6 +19,7 @@ import com.upmc.jamfinder.tools.UserTools;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SignInActivity extends AppCompatActivity{
 
@@ -41,20 +42,6 @@ public class SignInActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
-
-        mSubmitbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                singin();
-            }
-        });
-        mLinkLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToLoginActivity();
-            }
-        });
-
     }
 
     @Override
@@ -79,7 +66,8 @@ public class SignInActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    private void singin(){
+    @OnClick(R.id.sign_in_submit_button)
+    public void singin(){
         if(checkForm() == CheckFormResult.VALID){
             mSubmitbutton.setEnabled(false);
 
@@ -115,7 +103,7 @@ public class SignInActivity extends AppCompatActivity{
     }
 
     private boolean creating(){
-        User newUser = new User(mName, mPassword);
+        User newUser = new User(mName, mPassword,mMail);
         UserTools.logUserIn(this, newUser);
         return true;
     }
@@ -139,9 +127,7 @@ public class SignInActivity extends AppCompatActivity{
             return CheckFormResult.EMPTY_PASSWORD;
         }
         mConfirmation = mConfirmPasswordEditText.getText().toString();
-     /*   if (mConfirmation.isEmpty()) {
-            return CheckFormResult.EMPTY_CONFIRMATION;
-        }*/
+
         if (!mPassword.equals(mConfirmation)) {
             mConfirmPasswordEditText.setError("Not same Password");
             return CheckFormResult.INCORRECT_CONFIRMATION;
@@ -153,7 +139,8 @@ public class SignInActivity extends AppCompatActivity{
     private void goToMainMenuActivity(){
         goToActivity(MainActivity.class);
     }
-    private void goToLoginActivity(){
+    @OnClick(R.id.signin_login)
+    public void goToLoginActivity(){
         goToActivity(LoginActivity.class);
     }
 

@@ -10,7 +10,8 @@
     tools:context="com.upmc.jamfinder.activities.CreateJamActivity"
     android:orientation="vertical"
     android:scrollbars="vertical"
-    >
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

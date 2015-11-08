@@ -24,12 +24,6 @@
             android:background="#f8f8f8"
             android:orientation="horizontal">
 
-            <!--<android.support.v7.widget.AppCompatButton-->
-                <!--android:id="@+id/main_menu_button"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_conten"-->
-                <!--android:drawableBottom="@drawable/ic_menu_black_48dp"-->
-                <!--android:layout_gravity="center"/>-->
             <ImageView
                 android:id="@+id/main_menu_button"
                 android:layout_width="wrap_content"
@@ -39,7 +33,9 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:hint="@string/main_search"
+                android:textColor="@color/black"/>
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton

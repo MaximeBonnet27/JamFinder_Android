@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.upmc.jamfinder.R;
@@ -17,6 +16,7 @@ import com.upmc.jamfinder.tools.UserTools;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class LoginActivity extends AppCompatActivity{
@@ -28,28 +28,21 @@ public class LoginActivity extends AppCompatActivity{
 
     private String mName;
     private String mPassword;
+    private boolean mIsLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
-
-        mLinkSigin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToSignInActivity();
-            }
-        });
+        mIsLoggedIn = checkUserLoggedIn();
 
 
+        if(mIsLoggedIn){
+            goToMainMenuActivity();
+        }
+        mNameEditText.setSelected(false);
+        mPasswordEditText.setSelected(false);
     }
 
     @Override
@@ -58,6 +51,8 @@ public class LoginActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -88,7 +83,8 @@ public class LoginActivity extends AppCompatActivity{
         return CheckFormResult.VALID;
     }
 
-    private void login(){
+    @OnClick(R.id.login_submit_button)
+    public void login(){
         if(checkForm() == CheckFormResult.VALID){
             mSubmitButton.setEnabled(false);
 
@@ -123,7 +119,8 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private boolean authenticating(){
-        User loggingIn = new User(mName, mPassword);
+        User loggingIn=UserTools.authenticating(mName,mPassword);
+        //User loggingIn = new User(mName, mPassword);
         UserTools.logUserIn(this, loggingIn);
         return true;
     }
@@ -131,7 +128,9 @@ public class LoginActivity extends AppCompatActivity{
     private void goToMainMenuActivity(){
         goToActivity(MainActivity.class);
     }
-    private void goToSignInActivity(){
+
+    @OnClick(R.id.login_signin)
+    public void goToSignInActivity(){
         goToActivity(SignInActivity.class);
     }
 
@@ -139,5 +138,9 @@ public class LoginActivity extends AppCompatActivity{
         Intent intent = new Intent(this, target);
 
         startActivity(intent);
+    }
+
+    private boolean checkUserLoggedIn(){
+        return UserTools.getLoggedInUser(this) != null;
     }
 }

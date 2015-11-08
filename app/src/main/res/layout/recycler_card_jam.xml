@@ -48,19 +48,23 @@
             android:layout_height="wrap_content"
             android:gravity="right">
 
-            <Button
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/recycler_card_jam_edit_button"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/recycler_card_jam_edit" />
+                android:text="@string/recycler_card_jam_edit"
+                android:textColor="@color/black"
+                />
 
-            <Button
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/recycler_card_jam_delete_button"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/recycler_card_jam_delete" />
+                android:text="@string/recycler_card_jam_delete"
+                android:textColor="@color/black"
+                />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
