@@ -124,13 +124,13 @@ public class CreateJamActivity extends AppCompatActivity implements GoogleApiCli
         if(isValide()){
             Jam newJam = new Jam(mNameEditText.getText().toString(),
                     UserTools.getLoggedInUser(CreateJamActivity.this),
-                    mLocation.latitude, mLocation.longitude, null, null);
+                    mLocation.latitude, mLocation.longitude,mDetailsEditText.getText().toString(), null, null);
             JamTools.saveJam(CreateJamActivity.this, newJam);
             User user =  UserTools.getLoggedInUser(CreateJamActivity.this);
             user.getCreatedJams().add(newJam);
             UserTools.logUserIn(CreateJamActivity.this, user);
             Toast.makeText(CreateJamActivity.this, R.string.create_jam_Created, Toast.LENGTH_SHORT).show();
-
+            finish();
         }
     }
 

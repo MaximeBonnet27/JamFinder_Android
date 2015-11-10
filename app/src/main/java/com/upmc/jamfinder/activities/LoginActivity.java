@@ -73,11 +73,13 @@ public class LoginActivity extends AppCompatActivity{
     private CheckFormResult checkForm() {
         mName = mNameEditText.getText().toString();
         if (mName.isEmpty()) {
+            mNameEditText.setError("Empty pseudo");
             return CheckFormResult.EMPTY_NAME;
         }
 
         mPassword = mPasswordEditText.getText().toString();
         if (mPassword.isEmpty()) {
+            mPasswordEditText.setError("Empty password");
             return CheckFormResult.EMPTY_PASSWORD;
         }
         return CheckFormResult.VALID;
@@ -91,9 +93,13 @@ public class LoginActivity extends AppCompatActivity{
             final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage(getString(R.string.login_authenticating));
-            progressDialog.show();
 
-            authenticating();
+
+            boolean isGood=authentificating();
+            if(isGood)
+                progressDialog.show();
+            else
+                mPasswordEditText.setError("wrong password");
 
             Thread runnable=new Thread(new Runnable() {
                 @Override
@@ -110,7 +116,8 @@ public class LoginActivity extends AppCompatActivity{
             try {
                 runnable.join();
                 mSubmitButton.setEnabled(true);
-                goToMainMenuActivity();
+                if(isGood)
+                    goToMainMenuActivity();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -118,11 +125,8 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 
-    private boolean authenticating(){
-        User loggingIn=UserTools.authenticating(mName,mPassword);
-        //User loggingIn = new User(mName, mPassword);
-        UserTools.logUserIn(this, loggingIn);
-        return true;
+    private boolean authentificating(){
+        return UserTools.authentificating(this,mName,mPassword);
     }
 
     private void goToMainMenuActivity(){

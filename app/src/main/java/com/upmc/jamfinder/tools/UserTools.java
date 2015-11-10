@@ -40,10 +40,12 @@ public class UserTools {
 
     private static User mainUser=new User("admin","admin","JamFinder@gmail.com");
 
-    public static User authenticating(String pseudo, String password){
-        if(mainUser.getName().equals(pseudo) && mainUser.getPassword().equals(password))
-            return mainUser;
-        return null;
+    public static boolean authentificating(Context context,String pseudo, String password){
+        if(mainUser.getName().equals(pseudo) && mainUser.getPassword().equals(password)) {
+            logUserIn(context,mainUser);
+            return true;
+        }
+        return false;
     }
 
 }

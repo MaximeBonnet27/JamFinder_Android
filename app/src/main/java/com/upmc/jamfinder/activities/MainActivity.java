@@ -34,6 +34,7 @@ import com.upmc.jamfinder.R;
 import com.upmc.jamfinder.customLayouts.DrawerPanelListAdapter;
 import com.upmc.jamfinder.model.Jam;
 import com.upmc.jamfinder.tools.JamTools;
+import com.upmc.jamfinder.tools.UserTools;
 
 import java.util.ArrayList;
 
@@ -258,7 +259,9 @@ public class MainActivity
 
             case R.id.main_drawer_logout:
                 //TODO Logout
-                return false;
+                intent = new Intent(this, LoginActivity.class);
+                UserTools.logUserIn(this, null);
+                break;
 
         }
         startActivity(intent);

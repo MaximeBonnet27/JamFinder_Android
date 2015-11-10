@@ -18,7 +18,6 @@ public class Jam implements Serializable{
 
     private int id;
     private String name;
-
     private User host;
     private List<User> participants;
     private Date start;
@@ -27,16 +26,18 @@ public class Jam implements Serializable{
 
     private String details;
 
-    public Jam(String name, User host, double latitute, double longitude, Date start, Date end) {
+    public Jam(String name, User host, double latitute, double longitude,String description, Date start, Date end) {
         this.name = name;
         this.host = host;
         this.latitute = latitute;
         this.longitude = longitude;
         this.start = start;
+        this.details=description;
         this.end = end;
         this.id = cpt++;
         this.participants = new ArrayList<>();
     }
+
 
     public int getId() {
         return id;
