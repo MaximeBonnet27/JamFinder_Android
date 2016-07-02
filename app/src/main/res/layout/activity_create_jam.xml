@@ -10,8 +10,14 @@
     tools:context="com.upmc.jamfinder.activities.CreateJamActivity"
     android:orientation="vertical"
     android:scrollbars="vertical"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
-    >
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
     <EditText
         android:id="@+id/create_jam_name"
@@ -19,7 +25,13 @@
         android:layout_height="wrap_content"
         android:hint="@string/create_jam_name_hint"
         android:layout_margin="4dp"/>
+    </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
     <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +40,13 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="4dp"/>
+    </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
     <EditText
         android:id="@+id/create_jam_details"
         android:layout_width="match_parent"
@@ -40,6 +58,7 @@
         android:scrollbars="vertical"
         android:layout_margin="4dp"
         />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/create_jam_button"
